@@ -1,18 +1,16 @@
 import streamlit as st
-import joblib
-import numpy as np
-import pandas as pd
+import requests  
+import json
 
 # Page Config
-st.set_page_config(page_title="MSAS Dropout Predictor", page_icon="🎓")
+st.set_page_config(page_title="MSAS Dashboard", page_icon="🎓")
 
-# Load Brains
-model = joblib.load('liftEd_xgb.pkl')
-scaler = joblib.load('scaler.pkl')
-features = scaler.feature_names_in_
+# path to the LIVE API URL
+API_URL = "https://capstone-assignment2-2026.onrender.com/predict"
 
-st.title("🎓 MSAS: Early Warning System")
+st.title("🎓 LiftEd Malawi: Early Warning System")
 st.markdown("### Identifying Student Dropout Risk in Malawi")
+#st.info("Connected to Live Cloud API: Render")
 st.divider()
 
 # Sidebar for Teacher Inputs
@@ -28,40 +26,47 @@ supplies = st.sidebar.radio("Has School Supplies?", ["Yes", "No"])
 
 # Predict Button
 if st.sidebar.button("Run Risk Assessment"):
-    # Prepare Data
-    vec = np.zeros(len(features))
-    vec[0], vec[1], vec[6] = age, std, failures
-    vec[3] = math / 100
-    vec[4], vec[5] = distance, household
-    vec[2] = 1 # Defaulting to female for this demo
-    vec[7] = 1 if supplies == "Yes" else 0
-    
-    # Inference
-    df = pd.DataFrame([vec], columns=features)
-    prob = float(model.predict_proba(scaler.transform(df))[0][1])
-    
-    # Sensitivity Hack (Match your API logic)
-    if failures > 0: prob += (0.10 * failures)
-    if age > 15: prob += 0.05
-    final_prob = min(0.98, max(0.02, prob))
-    
-    # Display Results
-    st.subheader(f"Risk Profile: {name}")
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.metric("Dropout Probability", f"{final_prob:.2%}")
-        
-    with col2:
-        if final_prob > 0.45:
-            st.error("STATUS: HIGH RISK")
-        else:
-            st.success("STATUS: LOW RISK")
+    # 1. Prepare Payload for API
+    payload = {
+        "name": name,
+        "age": age,
+        "current_standard": std,
+        "gender_is_female": 1, 
+        "math_score_percent": float(math),
+        "distance_to_school_km": float(distance),
+        "household_size": int(household),
+        "previous_failures": int(failures),
+        "has_school_supplies": 1 if supplies == "Yes" else 0
+    }
 
-    # Risk Drivers (The Grade Booster!)
-    if final_prob > 0.45:
-        st.warning("⚠️ **Primary Risk Drivers Detected:**")
-        if failures >= 1: st.write("- History of Grade Repetition")
-        if age > (std + 6): st.write("- Significant Age-Grade Mismatch")
-        if math < 40: st.write("- Academic Struggle in Core Subjects")
-        st.info("💡 **Recommendation:** Schedule a guardian meeting to discuss economic or social barriers.")
+    try:
+        # 2. Call the Render API
+        with st.spinner('Querying Cloud Model...'):
+            response = requests.post(API_URL, json=payload)
+            data = response.json()
+
+        if response.status_code == 200:
+            # 3. Extract results from the API response
+            res = data["risk_assessment"]
+            expl = data["explainability"]
+            
+            st.subheader(f"Risk Profile: {data['student_metadata']['name']}")
+            
+            col1, col2, col3 = st.columns(3)
+            col1.metric("Probability", res["probability"])
+            col2.metric("Status", res["status"])
+            col3.metric("Priority", res["priority"])
+
+            # 4. Display Explainability
+            if res["status"] == "HIGH RISK":
+                st.warning("⚠️ **Primary Risk Drivers Detected:**")
+                for driver in expl["primary_risk_drivers"]:
+                    st.write(f"- {driver}")
+                st.info(f"💡 **Recommendation:** {expl['intervention_hint']}")
+            else:
+                st.success(" Student is currently stable. Maintain routine monitoring.")
+        else:
+            st.error(f"API Error: {data.get('detail', 'Unknown error')}")
+
+    except Exception as e:
+        st.error(f"Could not connect to API: {e}")
