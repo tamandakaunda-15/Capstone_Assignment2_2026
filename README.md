@@ -29,16 +29,22 @@ Data Source: [Havard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?pers
    cd Capstone_Assignment2_2026
    cd MSAS_Capstone
    ```
-2. ** Install Dependencies
-   ``` pip install -r requirements```
+2. **Install Dependencies**
+   ```
+   pip install -r requirements
+   ```
 
-3. Run the API (FastAPI)
-   ```uvicorn main: app --reload ```
+4. Run the API (FastAPI)
+   ```
+   uvicorn main: app --reload
+   ```
 Access the interactive docs at: (http://127.0.0.1:8000/docs)[http://127.0.0.1:8000/docs]
 
-4. Run the dashboard Streamlit:
+6. Run the dashboard Streamlit:
 
-    ``` streamlit run streamlit_app.py```
+    ```
+   streamlit run streamlit_app.py
+    ```
 
 ## Model Performance
 Primary model: XGBoost Classifer
