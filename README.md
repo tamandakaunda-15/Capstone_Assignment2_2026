@@ -38,7 +38,8 @@ Data Source: [Havard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?pers
    ```
    uvicorn main: app --reload
    ```
-Access the interactive docs at: (http://127.0.0.1:8000/docs)[http://127.0.0.1:8000/docs]
+   OR 
+Access the interactive docs at: https://capstone-assignment2-2026.onrender.com/docs#/
 
 6. Run the dashboard Streamlit:
 
