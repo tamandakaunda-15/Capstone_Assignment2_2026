@@ -8,9 +8,12 @@ Data Source: [Havard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?pers
 ## key Features
 * **Predictive Inference:** Utilizes a high-recall XGBoost model (Recall: 0.76) to minimize "False Negatives" (missing at-risk students).
 * **Explainability Layer:** Unlike standard "Black Box" models, MSAS identifies specific risk drivers (e.g., Age-Grade mismatch, academic struggle) to help teachers understand the *why* behind a prediction.
-* **Dual-Deployment Architecture:** * **FastAPI Backend:** A production-ready REST API for system integrations.
+* **Dual-Deployment Architecture:** 
+    * **FastAPI Backend:** A production-ready REST API for system integrations (accessed through a render link).
     * **Streamlit Frontend:** An intuitive, teacher-facing dashboard for manual risk assessment.
 * **Data Validation:** Robust Pydantic schema validation to ensure data integrity at the point of entry.
+<img width="1500" height="843" alt="0001-2155466567900038747 (3)" src="https://github.com/user-attachments/assets/10199bde-302f-43b6-9780-14a36b6b9eb8" />
+
 
 ## Tech Stack 
 - **language:** Python 3.13
