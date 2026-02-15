@@ -1,4 +1,4 @@
-#**Project: Predicting Adolescent School Dropout in Malawi**
+# **Project: Predicting Adolescent School Dropout in Malawi**
 
 This project explores how machine learning can beused to predict adolescent dropout in Malawian Primary schools. This project utilizes the Longitudinal Study of Scooling Quality and Experience in Malawi (MSAS) student dataset collected over 6 rounds.
 
