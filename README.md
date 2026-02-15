@@ -30,20 +30,20 @@ Data Source: [Havard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?pers
    cd MSAS_Capstone
    ```
 2. ** Install Dependencies
-``` pip install -r requirements```
+   ``` pip install -r requirements```
 
 3. Run the API (FastAPI)
-```uvicorn main: app --reload ```
+   ```uvicorn main: app --reload ```
 Access the interactive docs at: (http://127.0.0.1:8000/docs)[http://127.0.0.1:8000/docs]
 
 4. Run the dashboard Streamlit:
 
-``` streamlit run streamlit_app.py```
+    ``` streamlit run streamlit_app.py```
 
 ## Model Performance
 Primary model: XGBoost Classifer
 Recall: 0.76(Optimized to ensure high sensitivity for intervention)
-Feature Engineering: 63 features, including dmeongraphics, academic and socio-economic indicators
+Feature Engineering: 63 features, including demographic, academic, and socio-economic indicators
 
 
 
