@@ -49,8 +49,13 @@ Access the interactive docs at: https://capstone-assignment2-2026.onrender.com/d
 
 ## Model Performance
 Primary model: XGBoost Classifer
+
 Recall: 0.76(Optimized to ensure high sensitivity for intervention)
+
 Feature Engineering: 63 features, including demographic, academic, and socio-economic indicators
+
+<img width="989" height="590" alt="download (1)" src="https://github.com/user-attachments/assets/7934ec47-fda7-4605-a776-aa4927d6dd63" />
+
 
 
 
